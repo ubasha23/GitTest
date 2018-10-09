@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/FaultTypes" xmlns:tns="http://www.example.org/FaultTypes" elementFormDefault="qualified">
+
+    <element name="Fault" type="tns:FaultDetails"></element>
+    
+    <complexType name="FaultDetails">
+    	<sequence>
+    		<element name="FaultTypes" type="tns:row" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="row">
+    	<sequence>
+    		<element name="FaultCode" type="string"></element>
+    		<element name="FaultDescription" type="string"></element>
+    		<element name="Response" type="string"></element>
+    	</sequence>
+    </complexType>
+</schema>

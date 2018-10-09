@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.example.org" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.example.org">
+  <xsd:element name="Request">
+    <xsd:annotation>
+      <xsd:documentation>A sample element</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="id" type="xsd:integer"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="EmployeeResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="firstName" type="xsd:string"/>
+        <xsd:element name="lastName" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="JobDetailResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="jobTitle" type="xsd:string"/>
+        <xsd:element name="salary" type="xsd:integer"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="JobRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="id" type="xsd:integer"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

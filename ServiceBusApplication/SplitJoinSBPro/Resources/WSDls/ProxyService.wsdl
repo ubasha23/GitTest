@@ -1,0 +1,57 @@
+<WL5G3N0:definitions targetNamespace="urn:EMP" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://www.example.org" xmlns:WL5G3N2="urn:EMP" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:EMP/types" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:EMP" xmlns:weo="http://www.example.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    <xsd:schema xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:EMP" xmlns:weo="http://www.example.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://www.example.org" schemaLocation="../Schema/XMLSchema_-256689817.xsd"/>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="EmpDetails_Request">
+    <WL5G3N0:part element="WL5G3N1:Request" name="part"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="EmpDetails_Response">
+    <WL5G3N0:part element="WL5G3N1:EmployeeResponse" name="part"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="JobDetails_Request">
+    <WL5G3N0:part element="WL5G3N1:JobRequest" name="part"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="JobDetails_Response">
+    <WL5G3N0:part element="WL5G3N1:JobDetailResponse" name="part"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="EmpDetails">
+    <WL5G3N0:operation name="EmpDetailsOP">
+      <WL5G3N0:input message="WL5G3N2:EmpDetails_Request"/>
+      <WL5G3N0:output message="WL5G3N2:EmpDetails_Response"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="JobDetailsOP">
+      <WL5G3N0:input message="WL5G3N2:JobDetails_Request"/>
+      <WL5G3N0:output message="WL5G3N2:JobDetails_Response"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="EmpDetailsSOAP11Binding" type="WL5G3N2:EmpDetails">
+    <WL5G3N3:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N0:operation name="EmpDetailsOP">
+      <WL5G3N3:operation soapAction="urn:EMP/EmpDetailsOP" style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N3:body parts="part" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body parts="part" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="JobDetailsOP">
+      <WL5G3N3:operation soapAction="urn:EMP/JobDetailsOP" style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N3:body parts="part" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body parts="part" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="EmpDetails">
+    <WL5G3N0:documentation>OSB Service</WL5G3N0:documentation>
+    <WL5G3N0:port binding="WL5G3N2:EmpDetailsSOAP11Binding" name="EmpDetailsPort">
+      <WL5G3N3:address location="http://localhost:7101/WSSBProject/ProxyService"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

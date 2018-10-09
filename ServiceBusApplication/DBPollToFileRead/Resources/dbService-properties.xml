@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+   <entry key="SYS.ORDERS:db_column_1">ID</entry>
+   <entry key="SYS.ORDERS:db_column_0">NAME</entry>
+   <entry key="SYS.ORDERS.NAME:db_column_not_null">false</entry>
+   <entry key="SYS.ORDERS.DATA:db_column_type">VARCHAR2</entry>
+   <entry key="SYS.ORDERS.ID:db_column_not_null">false</entry>
+   <entry key="SYS.ORDERS:db_table_type">TABLE</entry>
+   <entry key="SYS.ORDERS.ID:db_column_scale">0</entry>
+   <entry key="SYS.ORDERS.DATA:db_column_size">20</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="SYS.ORDERS.NAME:db_column_type">VARCHAR2</entry>
+   <entry key="SYS.ORDERS.ID:db_column_precision">38</entry>
+   <entry key="root_descriptor_alias">SYS.ORDERS</entry>
+   <entry key="SYS.ORDERS.DATA:db_column_not_null">false</entry>
+   <entry key="SYS.ORDERS.ID:db_column_type">NUMBER</entry>
+   <entry key="SYS.ORDERS.NAME:db_column_size">20</entry>
+   <entry key="SYS.ORDERS:db_column_2">DATA</entry>
+</properties>

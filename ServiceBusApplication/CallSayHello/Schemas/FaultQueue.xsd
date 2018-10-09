@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/FaultQueue" xmlns:tns="http://www.example.org/FaultQueue" elementFormDefault="qualified">
+
+    <element name="Fault" type="tns:FaultDetails"></element>
+    
+    <complexType name="FaultDetails">
+    	<sequence>
+    		<element name="Name" type="string"></element>
+    		<element name="ErrorCode" type="string"></element>
+    		<element name="ErrorMessage" type="string"></element>
+    	</sequence>
+    </complexType>
+</schema>

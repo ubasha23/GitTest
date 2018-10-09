@@ -1,0 +1,12 @@
+<wsdl:definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ServiceBusApplication/DBPollToFileRead/dbService" name="dbService-concrete" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <wsdl:import location="dbService.wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/ServiceBusApplication/DBPollToFileRead/dbService"/>
+    <wsdl:binding name="dbService_ptt-binding" type="dbs:dbService_ptt" xmlns:dbs="http://xmlns.oracle.com/pcbpel/adapter/db/ServiceBusApplication/DBPollToFileRead/dbService">
+        <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+        <wsdl:operation name="receive">
+            <soap:operation soapAction="receive"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

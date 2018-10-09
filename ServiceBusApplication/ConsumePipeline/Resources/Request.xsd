@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.example.org"
+            targetNamespace="http://www.example.org" elementFormDefault="qualified">
+  <xsd:element name="Req">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ItemNumber" type="xsd:string"/>
+        <xsd:element name="itemType" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Res">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ItemName" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

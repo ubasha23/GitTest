@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:templateEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+    <con:coreEntry>
+        <con:binding type="XML" xsi:type="con:AnyWsdlXmlBindingType"/>
+    </con:coreEntry>
+    <con:router errorHandler="error-a4d11ea.N6f556e31.0.15da2d70ec0.N7fc4">
+        <con:pipeline type="request" name="request-a4d11ea.N6f556e31.0.15da2d70ec0.N8000">
+            <con:stage id="_StageId-a4d11ea.N6f556e31.0.15da2d70ec0.N7ffe" name="Stage1">
+                <con:context/>
+                <con:actions>
+                    <con:placeholder-node id="PlaceholderID_a4d11ea.N6f556e31.0.15da2d70ec0.N7ffc"/>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-a4d11ea.N6f556e31.0.15da2d70ec0.N7fff">
+            <con:stage id="_StageId-a4d11ea.N6f556e31.0.15da2d70ec0.N7ffd" name="Stage1">
+                <con:context/>
+                <con:actions>
+                    <con:placeholder-node id="PlaceholderID_a4d11ea.N6f556e31.0.15da2d70ec0.N7ffb"/>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="error-a4d11ea.N6f556e31.0.15da2d70ec0.N7fc4">
+            <con:stage id="_StageId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fc3" name="Stage1">
+                <con:context/>
+                <con:actions>
+                    <con1:assign varName="ErrorCode">
+                        <con2:id>_ActionId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fc0</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>$fault/ctx:errorCode</con2:xqueryText>
+                        </con1:expr>
+                    </con1:assign>
+                    <con1:assign varName="ErrorReason">
+                        <con2:id>_ActionId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fbd</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>$fault/ctx:reason</con2:xqueryText>
+                        </con1:expr>
+                    </con1:assign>
+                    <con1:ifThenElse>
+                        <con2:id>_ActionId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fb6</con2:id>
+                        <con1:case id="_BranchId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fb5">
+                            <con1:condition>
+                                <con2:xqueryText>$fault/ctx:errorCode/text()='OSB-38000'</con2:xqueryText>
+                            </con1:condition>
+                            <con1:actions>
+                                <con1:replace varName="body" contents-only="true">
+                                    <con2:id>_ActionId-a4d11ea.N6f556e31.0.15da2d70ec0.N7fb2</con2:id>
+                                    <con1:location>
+                                        <con2:xpathText>./*</con2:xpathText>
+                                    </con1:location>
+                                    <con1:expr>
+                                        <con2:xqueryText><![CDATA[<tns:FaultDetails xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+      xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+      xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" 
+      xmlns:tns="http://xmlns.ikea-cusis.com/osb/microservices/Fault">
+      <tns:ServiceName>{$serviceName}</tns:ServiceName>
+      <tns:ErrorCode>Target Business Service:Microservices_GetItem_BS is not available</tns:ErrorCode>
+	  <tns:ErrorText>{$Errortext}</tns:ErrorText>
+      <tns:ErrorDetails>Error has occured for Item Number :{$itemNumber}</tns:ErrorDetails>
+   </tns:FaultDetails>]]></con2:xqueryText>
+                                    </con1:expr>
+                                </con1:replace>
+                            </con1:actions>
+                        </con1:case>
+                        <con1:default/>
+                    </con1:ifThenElse>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="PipelinePairNode1">
+                <con:request>request-a4d11ea.N6f556e31.0.15da2d70ec0.N8000</con:request>
+                <con:response>response-a4d11ea.N6f556e31.0.15da2d70ec0.N7fff</con:response>
+            </con:pipeline-node>
+            <con:route-node id="_RouteId-a4d11ea.N6f556e31.0.15da2d70ec0.N7ff8" name="RouteNode1">
+                <con:context/>
+                <con:actions/>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:templateEntry>

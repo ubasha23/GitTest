@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations">
+    <con:coreEntry>
+        <con:binding type="Mixed" xsi:type="con:MixedBindingType">
+            <con:request type="XML">
+                <con1:schema ref="sayHello/Schemas/Request" element="Request" xmlns:con1="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+            </con:request>
+            <con:response type="XML">
+                <con1:schema ref="sayHello/Schemas/Response" element="Response" xmlns:con1="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+            </con:response>
+        </con:binding>
+        <oper:operations>
+            <oper:monitoring enabled="false" aggregationInterval="10" level="pipeline"/>
+            <oper:tracingEnabled>false</oper:tracingEnabled>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+    </con:coreEntry>
+    <con1:router xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/typesystem/config" xmlns:con1="http://www.bea.com/wli/sb/pipeline/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+        <con1:pipeline type="request" name="PipelinePairNode_request"/>
+        <con1:pipeline type="response" name="PipelinePairNode_response">
+            <con1:stage name="CheckName">
+                <con1:context>
+                    <con2:varNsDecl namespace="http://www.example.org/Request" prefix="req"/>
+                    <con2:varNsDecl namespace="http://www.example.org/Response" prefix="res"/>
+                </con1:context>
+                <con1:actions>
+                    <con3:ifThenElse>
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7ee6</con2:id>
+                        <con3:case>
+                            <con3:condition>
+                                <con2:xqueryText>$body/req:Request/req:Name=''</con2:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:replace varName="body" contents-only="false">
+                                    <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7e78</con2:id>
+                                    <con3:location>
+                                        <con2:xpathText>./*</con2:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con2:xqueryTransform>
+                                            <con2:resource ref="sayHello/Transformation/sayHelloFail"/>
+                                        </con2:xqueryTransform>
+                                    </con3:expr>
+                                </con3:replace>
+                            </con3:actions>
+                        </con3:case>
+                        <con3:default>
+                            <con3:assign varName="Name">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7e21</con2:id>
+                                <con3:expr>
+                                    <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config">$body/req:Request/req:Name/text()</con:xqueryText>
+                                </con3:expr>
+                            </con3:assign>
+                            <con4:log xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config">
+                                <con2:id>_ActionId-1491902557273965542-7156e8bb.15d65695458.-7fec</con2:id>
+                                <con4:logLevel>error</con4:logLevel>
+                                <con4:expr>
+                                    <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config">$body</con:xqueryText>
+                                </con4:expr>
+                                <con4:message>Body</con4:message>
+                            </con4:log>
+                            <con3:assign varName="Response">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7dce</con2:id>
+                                <con3:expr>
+                                    <con:xqueryTransform xmlns:con="http://www.bea.com/wli/sb/stages/config">
+                                        <con:resource ref="sayHello/Transformation/sayHelloSuccess"/>
+                                        <con:param name="name1">
+                                            <con:path>$body/req:Request/req:Name/text()</con:path>
+                                        </con:param>
+                                    </con:xqueryTransform>
+                                </con3:expr>
+                            </con3:assign>
+                            <con3:replace varName="body" contents-only="false">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7e40</con2:id>
+                                <con3:location>
+                                    <con2:xpathText>./*</con2:xpathText>
+                                </con3:location>
+                                <con3:expr>
+                                    <con:xqueryTransform xmlns:con="http://www.bea.com/wli/sb/stages/config">
+                                        <con:resource ref="sayHello/Transformation/sayHelloSuccess"/>
+                                        <con:param name="name1">
+                                            <con:path>$body/req:Request/req:Name/text()</con:path>
+                                        </con:param>
+                                    </con:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                        </con3:default>
+                    </con3:ifThenElse>
+                </con1:actions>
+            </con1:stage>
+        </con1:pipeline>
+        <con1:flow>
+            <con1:pipeline-node name="PipelinePairNode">
+                <con1:request>PipelinePairNode_request</con1:request>
+                <con1:response>PipelinePairNode_response</con1:response>
+            </con1:pipeline-node>
+        </con1:flow>
+    </con1:router>
+</con:pipelineEntry>

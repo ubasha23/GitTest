@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations">
+    <con:coreEntry>
+        <con:description/>
+        <con:binding type="Mixed" xsi:type="con:MixedBindingType">
+            <con:request type="XML">
+                <con1:schema ref="CallSayHello/Schemas/Request" element="Request" xmlns:con1="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+            </con:request>
+            <con:response type="XML">
+                <con1:schema ref="CallSayHello/Schemas/Response" element="Response" xmlns:con1="http://www.bea.com/wli/sb/typesystem/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+            </con:response>
+        </con:binding>
+        <oper:operations>
+            <oper:monitoring enabled="false" aggregationInterval="10" level="pipeline"/>
+            <oper:tracingEnabled>false</oper:tracingEnabled>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con1:router xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/typesystem/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con1="http://www.bea.com/wli/sb/pipeline/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config">
+        <con1:pipeline type="error" name="_onErrorHandler-9220772319770626800-6d7dd0f4.15d656e12ad.-7d85">
+            <con1:stage name="CreateResponse">
+                <con1:context>
+                    <con2:varNsDecl namespace="http://www.example.org/Request" prefix="req"/>
+                    <con2:varNsDecl namespace="http://www.example.org/Response" prefix="res"/>
+                    <con2:varNsDecl namespace="http://www.example.org/FaultQueue" prefix="faul"/>
+                </con1:context>
+                <con1:actions>
+                    <con3:assign varName="ErrorCode">
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7c52</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>xs:string($fault/ctx:errorCode/text())</con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:assign varName="ErrorReason">
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7c54</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>xs:string($fault/ctx:reason/text())</con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:assign varName="bodyTemp">
+                        <con2:id>_ActionId-1491902557273965542-7156e8bb.15d65695458.-7fdf</con2:id>
+                        <con3:expr>
+                            <con:xqueryTransform xmlns:con="http://www.bea.com/wli/sb/stages/config">
+                                <con:resource ref="CallSayHello/Transformation/FaultTransformation"/>
+                                <con:param name="ErrorReason">
+                                    <con:path>$fault/ctx:reason/text()</con:path>
+                                </con:param>
+                                <con:param name="ErrorCode">
+                                    <con:path>$fault/ctx:errorCode/text()</con:path>
+                                </con:param>
+                            </con:xqueryTransform>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:insert varName="body">
+                        <con2:id>_ActionId-1491902557273965542-7156e8bb.15d65695458.-7fdb</con2:id>
+                        <con3:location>
+                            <con:xpathText xmlns:con="http://www.bea.com/wli/sb/stages/config">.</con:xpathText>
+                        </con3:location>
+                        <con3:where>first-child</con3:where>
+                        <con3:expr>
+                            <con:xqueryText xmlns:con="http://www.bea.com/wli/sb/stages/config">$bodyTemp</con:xqueryText>
+                        </con3:expr>
+                    </con3:insert>
+                    <con3:assign varName="TempVar">
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7b48</con2:id>
+                        <con3:expr>
+                            <con2:xqueryText>$body</con2:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con4:route>
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7b65</con2:id>
+                        <con4:service ref="CallSayHello/BusinessService/PopulateErrorQueue_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con4:outboundTransform>
+                            <con3:assign varName="BusinessFaultMapping">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7989</con2:id>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="CallSayHello/Transformation/TechnicalToBusinessFaultMapping"/>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:assign>
+                            <con3:replace varName="body">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-79e4</con2:id>
+                                <con3:location>
+                                    <con2:xpathText>./*</con2:xpathText>
+                                </con3:location>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="CallSayHello/Transformation/MapError"/>
+                                        <con2:param name="ErrorCode">
+                                            <con2:path>$ErrorCode</con2:path>
+                                        </con2:param>
+                                        <con2:param name="ErrorDVM">
+                                            <con2:path>$BusinessFaultMapping</con2:path>
+                                        </con2:param>
+                                        <con2:param name="ErrorDescription">
+                                            <con2:path>$ErrorReason</con2:path>
+                                        </con2:param>
+                                        <con2:param name="Name">
+                                            <con2:path>$Name</con2:path>
+                                        </con2:param>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                        </con4:outboundTransform>
+                    </con4:route>
+                    <con3:replace varName="body">
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-79c5</con2:id>
+                        <con3:location>
+                            <con2:xpathText>.</con2:xpathText>
+                        </con3:location>
+                        <con3:expr>
+                            <con2:xqueryText>$TempVar</con2:xqueryText>
+                        </con3:expr>
+                    </con3:replace>
+                    <con2:reply isError="false">
+                        <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7c17</con2:id>
+                    </con2:reply>
+                </con1:actions>
+            </con1:stage>
+        </con1:pipeline>
+        <con1:flow>
+            <con1:route-node name="RouteTo_CallSayHello_BS" error-handler="_onErrorHandler-9220772319770626800-6d7dd0f4.15d656e12ad.-7d85">
+                <con1:context>
+                    <con2:varNsDecl namespace="http://www.example.org/Request" prefix="req"/>
+                </con1:context>
+                <con1:actions>
+                    <con1:route xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+                        <conid1:id xmlns:conid1="http://www.bea.com/wli/sb/stages/config">_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7dbd</conid1:id>
+                        <con1:service ref="CallSayHello/BusinessService/CallSayHello_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con1:outboundTransform>
+                            <con3:assign varName="Name">
+                                <con2:id>_ActionId-9220772319770626800-6d7dd0f4.15d656e12ad.-7a53</con2:id>
+                                <con3:expr>
+                                    <con2:xqueryText>$body/req:Request/req:Name/text()</con2:xqueryText>
+                                </con3:expr>
+                            </con3:assign>
+                        </con1:outboundTransform>
+                        <con1:responseTransform/>
+                    </con1:route>
+                </con1:actions>
+            </con1:route-node>
+        </con1:flow>
+    </con1:router>
+</con:pipelineEntry>

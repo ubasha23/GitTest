@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con3:wsdl ref="Error_Handler_Demo/resources/wsdl/ErrorHandlerDemo" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/pipeline/config"/>
+            <con:binding>
+                <con:name>ErrorHandlerDemoSoapBinding</con:name>
+                <con:namespace>http://www.choicehotels.com/service/ErrorHandlerDemo</con:namespace>
+            </con:binding>
+        </con:binding>
+        <oper:operations>
+            <oper:monitoring enabled="false" aggregationInterval="10" level="pipeline"/>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+    </con:coreEntry>
+    <con:router xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config">
+        <con:pipeline type="request" name="ValidID_request"/>
+        <con:pipeline type="response" name="ValidID_response">
+            <con:stage name="ReplySuccess">
+                <con:context>
+                    <con1:varNsDecl namespace="http://www.choicehotels.com/service/ErrorHandlerDemo" prefix="err"/>
+                </con:context>
+                <con:actions>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4828193526660216623-7b59db3c.13c5863a6e7.-7d77</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>&lt;err:ErrorHandlerDemoResponse  	xmlns:err="http://www.choicehotels.com/service/ErrorHandlerDemo">
+	&lt;err:status>Success&lt;/err:status>
+	&lt;/err:ErrorHandlerDemoResponse></con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="BusinessFault_request"/>
+        <con:pipeline type="response" name="BusinessFault_response">
+            <con:stage name="ReplyBusinessFault">
+                <con:context/>
+                <con:actions>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4828193526660216623-7b59db3c.13c5863a6e7.-7d07</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>&lt;err:ErrorHandlerDemoResponse  	xmlns:err="http://www.choicehotels.com/service/ErrorHandlerDemo">
+	&lt;err:status>BusinessFault&lt;/err:status>
+	&lt;/err:ErrorHandlerDemoResponse></con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                    <con1:reply isError="true">
+                        <con1:id>_ActionId-4828193526660216623-7b59db3c.13c5863a6e7.-78cc</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="TechnicalFault_request"/>
+        <con:pipeline type="response" name="TechnicalFault_response">
+            <con:stage name="ReplyTechnicalFault">
+                <con:context/>
+                <con:actions>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4828193526660216623-7b59db3c.13c5863a6e7.-7886</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>&lt;err:ErrorHandlerDemoResponse  	xmlns:err="http://www.choicehotels.com/service/ErrorHandlerDemo">
+	&lt;err:status>TechnicalFault&lt;/err:status>
+	&lt;/err:ErrorHandlerDemoResponse></con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                    <con1:reply isError="true">
+                        <con1:id>_ActionId-4828193526660216623-7b59db3c.13c5863a6e7.-7885</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:branch-node type="condition" name="BranchNode1">
+                <con:context>
+                    <con1:varNsDecl namespace="http://www.choicehotels.com/service/ErrorHandlerDemo" prefix="err"/>
+                </con:context>
+                <con:branch-table variable="body">
+                    <con:xpath>
+                        <con1:xpathText>./err:ErrorHandlerDemoRequest/err:ID</con1:xpathText>
+                    </con:xpath>
+                    <con:branch name="ValidID">
+                        <con:operator>less than equal to</con:operator>
+                        <con:value>5</con:value>
+                        <con:flow>
+                            <con:pipeline-node name="ValidID">
+                                <con:request>ValidID_request</con:request>
+                                <con:response>ValidID_response</con:response>
+                            </con:pipeline-node>
+                        </con:flow>
+                    </con:branch>
+                    <con:branch name="BusinessFault">
+                        <con:operator>less than equal to</con:operator>
+                        <con:value>10</con:value>
+                        <con:flow>
+                            <con:pipeline-node name="BusinessFault">
+                                <con:request>BusinessFault_request</con:request>
+                                <con:response>BusinessFault_response</con:response>
+                            </con:pipeline-node>
+                        </con:flow>
+                    </con:branch>
+                    <con:branch name="TechnicalFault">
+                        <con:operator>greater than equal to</con:operator>
+                        <con:value>11</con:value>
+                        <con:flow>
+                            <con:pipeline-node name="TechnicalFault">
+                                <con:request>TechnicalFault_request</con:request>
+                                <con:response>TechnicalFault_response</con:response>
+                            </con:pipeline-node>
+                        </con:flow>
+                    </con:branch>
+                    <con:default-branch>
+                        <con:flow/>
+                    </con:default-branch>
+                </con:branch-table>
+            </con:branch-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

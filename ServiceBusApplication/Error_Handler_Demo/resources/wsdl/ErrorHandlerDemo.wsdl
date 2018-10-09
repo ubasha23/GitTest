@@ -1,0 +1,52 @@
+<wsdl:definitions targetNamespace="http://www.choicehotels.com/service/ErrorHandlerDemo" xmlns:ads="http://www.choicehotels.com/service/ErrorHandlerDemo" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+ <wsdl:types>
+  <xsd:schema>
+   <xsd:import namespace="http://www.choicehotels.com/service/ErrorHandlerDemo" schemaLocation="../xsd/ErrorHandlerDemo.xsd"/>
+  </xsd:schema>
+ </wsdl:types>
+ <wsdl:message name="ErrorHandlerDemoRequestMessage">
+  <wsdl:part name="parameters" element="ads:ErrorHandlerDemoRequest"/>
+ </wsdl:message>
+ <wsdl:message name="ErrorHandlerDemoResponseMessage">
+  <wsdl:part name="parameters" element="ads:ErrorHandlerDemoResponse"/>
+ </wsdl:message>
+ <wsdl:message name="ErrorHandlerDemoBusinessFaultMessage">
+  <wsdl:part name="parameters" element="ads:ErrorHandlerDemoBusinessFault"/>
+ </wsdl:message>
+ <wsdl:message name="ErrorHandlerDemoTechnicalFaultMessage">
+  <wsdl:part name="parameters" element="ads:ErrorHandlerDemoTechnicalFault"/>
+ </wsdl:message>
+ 
+ <wsdl:portType name="ErrorHandlerDemoProducer">
+  <wsdl:operation name="testErrorHandling">
+   <wsdl:input message="ads:ErrorHandlerDemoRequestMessage"/>
+   <wsdl:output message="ads:ErrorHandlerDemoResponseMessage"/>
+   <wsdl:fault name="businessFault" message="ads:ErrorHandlerDemoBusinessFaultMessage"/>
+   <wsdl:fault name="technicalFault" message="ads:ErrorHandlerDemoTechnicalFaultMessage"/>
+  </wsdl:operation>
+ </wsdl:portType>
+ 
+ <wsdl:binding name="ErrorHandlerDemoSoapBinding" type="ads:ErrorHandlerDemoProducer">
+  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <wsdl:operation name="testErrorHandling">
+   <soap:operation soapAction="http://www.choicehotels.com/service/ErrorHandlerDemo/testErrorHandling"/>
+   <wsdl:input>
+    <soap:body use="literal"/>
+   </wsdl:input>
+   <wsdl:output>
+    <soap:body use="literal"/>
+   </wsdl:output>
+   <wsdl:fault name="businessFault">
+    <soap:fault name="businessFault" use="literal"/>
+   </wsdl:fault>
+   <wsdl:fault name="technicalFault">
+    <soap:fault name="technicalFault" use="literal"/>
+   </wsdl:fault>
+  </wsdl:operation>
+ </wsdl:binding>
+ <wsdl:service name="ErrorHandlerDemo">
+  <wsdl:port name="ErrorHandlerDemoProducer" binding="ads:ErrorHandlerDemoSoapBinding">
+   <soap:address location="http://www.choicehotels.com/service/ErrorHandlerDemo"/>
+  </wsdl:port>
+ </wsdl:service>
+</wsdl:definitions>

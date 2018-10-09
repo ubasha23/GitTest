@@ -1,0 +1,21 @@
+<adapter-config name="dbService" adapter="db" wsdlLocation="dbService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="BashaConnection" location="eis/db/TestDataSource"/>
+  <endpoint-activation portType="dbService_ptt" operation="receive">
+    <activation-spec className="oracle.tip.adapter.db.DBActivationSpec">
+      <property name="DescriptorName" value="dbService.Orders"/>
+      <property name="QueryName" value="dbServiceSelect"/>
+      <property name="MappingsMetaDataURL" value="dbService-or-mappings.xml"/>
+      <property name="PollingStrategy" value="LogicalDeletePollingStrategy"/>
+      <property name="MarkReadColumn" value="DATA"/>
+      <property name="MarkReadValue" value="READ"/>
+      <property name="MarkUnreadValue" value="NEW"/>
+      <property name="PollingInterval" value="5"/>
+      <property name="MaxRaiseSize" value="1"/>
+      <property name="MaxTransactionSize" value="10"/>
+      <property name="NumberOfThreads" value="1"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>
